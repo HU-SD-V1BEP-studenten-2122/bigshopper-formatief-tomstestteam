@@ -12,15 +12,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
         <dependency><!-- for unit testing -->
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.6.3</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- running on tomcat -->
@@ -49,33 +49,40 @@
         <dependency><!-- for runnning webservice api with jax-rs-->
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-            <version>2.30.1</version>
+            <version>2.35</version>
         </dependency>
         <dependency><!-- for injection purposes with jax-rs-->
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.30.1</version>
+            <version>2.35</version>
         </dependency>
-        <!-- @TODO be sure to add Jackson, this would be a good spot :) -->
-
-        <!--    <dependency> to connect your blob service -->
-        <!--      <groupId>com.azure</groupId>-->
-        <!--      <artifactId>azure-storage-blob</artifactId>-->
-        <!--      <version>12.6.0</version>-->
-        <!--    </dependency>-->
-
+        <!-- @TODO be sure to add the Jersey Jackson-module, this would be a good spot :) -->
         <!--    <dependency> for authentication later on -->
         <!--      <groupId>io.jsonwebtoken</groupId>-->
         <!--      <artifactId>jjwt</artifactId>-->
         <!--      <version>0.9.1</version>-->
         <!--    </dependency>-->
 
-<!--        <dependency> allowing azure to use logs -->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-nop</artifactId>-->
-<!--            <version>2.0.0-alpha1</version>-->
-<!--        </dependency>-->
-<!--    </dependencies>-->
+        <!--    <dependency> to connect your blob service -->
+        <!--      <groupId>com.azure</groupId>-->
+        <!--      <artifactId>azure-storage-blob</artifactId>-->
+        <!--      <version>12.16.0</version>-->
+        <!--    </dependency>-->
+
+        <!--    WARNING: if you want to use both Jersey-jackson and Azure, -->
+        <!--    you'll have to explicitly add jackson-databind as well (Maven nonsense...) -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.fasterxml.jackson.core</groupId> -->
+        <!--     <artifactId>jackson-databind</artifactId> -->
+        <!--     <version>2.13.2.2</version> -->
+        <!-- </dependency> -->
+
+        <!--        <dependency> allowing azure to use logs -->
+        <!--            <groupId>org.slf4j</groupId>-->
+        <!--            <artifactId>slf4j-nop</artifactId>-->
+        <!--            <version>2.0.0-alpha1</version>-->
+        <!--        </dependency>-->
+
     </dependencies>
 
     <build>
