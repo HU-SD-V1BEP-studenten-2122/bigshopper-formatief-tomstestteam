@@ -79,11 +79,10 @@ public class ListResource {
             list.addItem(product, itemRequest.amount);
         }
 
-        Shopper oudeOwner = list.getOwner();
-        oudeOwner.removeList(list);
         nieuweOwner.addList(list);
 
         return Response.ok(list).build();
+
     }
 
     @POST

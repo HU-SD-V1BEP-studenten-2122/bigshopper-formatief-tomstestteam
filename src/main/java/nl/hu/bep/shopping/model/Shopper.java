@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Shopper implements NamedObject {
     private String name;
     private static List<Shopper> allShoppers = new ArrayList<>();
-    private List<ShoppingList> allLists = new ArrayList<>();
+    private List<ShoppingList> myList = new ArrayList<>();
 
     public Shopper(String nm) {
         this.name = nm;
@@ -43,22 +43,33 @@ public class Shopper implements NamedObject {
     }
 
     public boolean addList(ShoppingList newList) {
-        if (!allLists.contains(newList)) {
-            return allLists.add(newList);
+        if (!myList.contains(newList)) {
+            newList.getOwner().removeList(newList);
+            newList.setOwner(this);
+            return myList.add(newList);
         }
         return false;
     }
 
     @JsonIgnore
-    public List<ShoppingList> getAllLists() {
-        return Collections.unmodifiableList(allLists);
+    public List<ShoppingList> getMyList() {
+        return Collections.unmodifiableList(myList);
     }
 
     public int getAmountOfLists() {
-        return allLists.size();
+        return myList.size();
     }
 
     public void removeList(ShoppingList list) {
-        this.allLists.remove(list);
+        list.setOwner(null);
+        this.myList.remove(list);
+
+    }
+
+    @Override
+    public String toString() {
+        return "Shopper{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

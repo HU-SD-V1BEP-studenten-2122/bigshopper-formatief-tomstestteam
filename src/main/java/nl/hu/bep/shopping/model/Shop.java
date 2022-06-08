@@ -1,7 +1,6 @@
 package nl.hu.bep.shopping.model;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Shop {
@@ -38,7 +37,7 @@ public class Shop {
 
     public List<ShoppingList> getListFromPerson(String nm) {
         Shopper found = getShopper(nm);
-        return found == null ? null : found.getAllLists();
+        return found == null ? null : found.getMyList();
     }
 
     public List<Product> getAllProducts() {

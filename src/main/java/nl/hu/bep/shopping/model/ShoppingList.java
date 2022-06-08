@@ -14,6 +14,7 @@ public class ShoppingList implements NamedObject {
         this.name = nm;
         this.owner = owner;
         allLists.add(this);
+        owner.addList(this);
         listItems = new ArrayList<>();
     }
 
@@ -47,5 +48,9 @@ public class ShoppingList implements NamedObject {
 
     public void clear() {
         this.listItems.clear();
+    }
+
+    public void setOwner(Shopper o) {
+        this.owner = o;
     }
 }
