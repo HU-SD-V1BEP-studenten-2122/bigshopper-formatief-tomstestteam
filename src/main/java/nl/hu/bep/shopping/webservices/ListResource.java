@@ -2,9 +2,6 @@ package nl.hu.bep.shopping.webservices;
 
 import nl.hu.bep.shopping.model.*;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

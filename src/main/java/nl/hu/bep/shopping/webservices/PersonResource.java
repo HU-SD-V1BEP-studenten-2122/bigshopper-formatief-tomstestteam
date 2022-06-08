@@ -4,10 +4,6 @@ import nl.hu.bep.shopping.model.Shop;
 import nl.hu.bep.shopping.model.Shopper;
 import nl.hu.bep.shopping.model.ShoppingList;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
