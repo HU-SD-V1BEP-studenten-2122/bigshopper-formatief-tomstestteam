@@ -1,6 +1,7 @@
 package nl.hu.bep.shopping.model;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Shop {
@@ -30,7 +31,7 @@ public class Shop {
         return Shopper.getAllShoppers();
     }
 
-    public Shopper getShopper(String nm){
+    public Shopper getShopper(String nm) {
         Shopper found = Shopper.getAllShoppers().stream().filter(hasName(nm)).findFirst().orElse(null);
         return found;
     }
@@ -42,5 +43,9 @@ public class Shop {
 
     public List<Product> getAllProducts() {
         return Product.getAllProducts();
+    }
+
+    public Product getProduct(String name) {
+        return Product.getAllProducts().stream().filter(hasName(name)).findFirst().orElse(null);
     }
 }
