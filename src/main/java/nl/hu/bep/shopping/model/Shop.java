@@ -30,8 +30,13 @@ public class Shop {
         return Shopper.getAllShoppers();
     }
 
-    public List<ShoppingList> getListFromPerson(String nm) {
+    public Shopper getShopper(String nm){
         Shopper found = Shopper.getAllShoppers().stream().filter(hasName(nm)).findFirst().orElse(null);
+        return found;
+    }
+
+    public List<ShoppingList> getListFromPerson(String nm) {
+        Shopper found = getShopper(nm);
         return found == null ? null : found.getAllLists();
     }
 

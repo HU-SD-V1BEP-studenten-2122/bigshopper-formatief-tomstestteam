@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("shopper")
@@ -20,39 +21,35 @@ public class PersonResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getShoppers() {
+    public List<Shopper> getShoppers() {
         Shop shop = Shop.getShop();
-        JsonArrayBuilder jab = Json.createArrayBuilder();
-
-        for (Shopper p : shop.getAllPersons()) {
-            JsonObjectBuilder job = Json.createObjectBuilder();
-            job.add("name", p.getName());
-            job.add("numberOfLists", p.getAmountOfLists());
-            jab.add(job);
-        }
-
-        JsonArray array = jab.build();
-        return array.toString();
-
+        return shop.getAllPersons();
     }
 
     @GET
     @Path("{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getShoppingListsFromPerson(@PathParam("name") String name) {
+    public Response getShopper(@PathParam("name") String name) {
+        Shopper shopper = Shop.getShop().getShopper(name);
+
+        if (shopper == null) {
+            return Response.status(404).entity(ErrorResponse.fromString("Shopper niet gevonden")).build();
+        } else {
+            return Response.ok(shopper).build();
+        }
+    }
+
+    @GET
+    @Path("{name}/list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getShoppingListsFromPerson(@PathParam("name") String name) {
         Shop shop = Shop.getShop();
-        JsonArrayBuilder jab = Json.createArrayBuilder();
+
         List<ShoppingList> allListsFromPerson = shop.getListFromPerson(name); //warning: might return null!
-        if (allListsFromPerson == null)
-            return Json.createObjectBuilder()
-                    .add("error", "No owner with that name appearantly")
-                    .build()
-                    .toString();
-        else
-            allListsFromPerson.forEach(
-                    sl -> jab.add(
-                            Json.createObjectBuilder()
-                                    .add("name", sl.getName())));
-        return jab.build().toString();
+        if (allListsFromPerson == null) {
+            return Response.status(404).entity(ErrorResponse.fromString("Shopper niet gevonden")).build();
+        } else {
+            return Response.ok(allListsFromPerson).build();
+        }
     }
 }

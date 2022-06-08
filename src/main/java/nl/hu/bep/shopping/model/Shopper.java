@@ -1,5 +1,7 @@
 package nl.hu.bep.shopping.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +45,7 @@ public class Shopper implements NamedObject {
         return false;
     }
 
+    @JsonIgnore
     public List<ShoppingList> getAllLists() {
         return Collections.unmodifiableList(allLists);
     }
