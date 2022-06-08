@@ -38,6 +38,10 @@ public class Shopper implements NamedObject {
         return Collections.unmodifiableList(allShoppers);
     }
 
+    public static void removeShopper(Shopper shopper){
+        allShoppers.remove(shopper);
+    }
+
     public boolean addList(ShoppingList newList) {
         if (!allLists.contains(newList)) {
             return allLists.add(newList);
@@ -52,5 +56,9 @@ public class Shopper implements NamedObject {
 
     public int getAmountOfLists() {
         return allLists.size();
+    }
+
+    public void removeList(ShoppingList list) {
+        this.allLists.remove(list);
     }
 }

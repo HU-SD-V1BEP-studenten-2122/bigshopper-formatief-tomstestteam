@@ -8,29 +8,29 @@ public class ShoppingList implements NamedObject {
     private String name;
     private Shopper owner;
     private static List<ShoppingList> allLists = new ArrayList<>();
-    private List<Item> ListItems;
+    private List<Item> listItems;
 
     public ShoppingList(String nm, Shopper owner) {
         this.name = nm;
         this.owner = owner;
         allLists.add(this);
-        ListItems = new ArrayList<>();
+        listItems = new ArrayList<>();
     }
 
     public List<Item> getListItems() {
-        return Collections.unmodifiableList(ListItems);
+        return Collections.unmodifiableList(listItems);
     }
 
     public boolean addItem(Product p, int amount) {
         Item newItem = new Item(p, amount);
-        if (!ListItems.contains(newItem)) {
-            return ListItems.add(newItem);
+        if (!listItems.contains(newItem)) {
+            return listItems.add(newItem);
         }
-        return ListItems.get(ListItems.indexOf(newItem)).addAmount(amount);
+        return listItems.get(listItems.indexOf(newItem)).addAmount(amount);
     }
 
     public Item getItem(String name) {
-        return ListItems.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
+        return listItems.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
     }
 
     public String getName() {
@@ -43,5 +43,9 @@ public class ShoppingList implements NamedObject {
 
     public static List<ShoppingList> getAllLists() {
         return Collections.unmodifiableList(allLists);
+    }
+
+    public void clear() {
+        this.listItems.clear();
     }
 }

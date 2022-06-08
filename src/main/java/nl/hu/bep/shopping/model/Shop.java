@@ -48,4 +48,8 @@ public class Shop {
     public Product getProduct(String name) {
         return Product.getAllProducts().stream().filter(hasName(name)).findFirst().orElse(null);
     }
+
+    public void removeShopper(Shopper shopper) {
+        Shopper.removeShopper(shopper);
+    }
 }

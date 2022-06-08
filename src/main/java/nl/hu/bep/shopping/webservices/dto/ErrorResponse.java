@@ -1,4 +1,4 @@
-package nl.hu.bep.shopping.webservices;
+package nl.hu.bep.shopping.webservices.dto;
 
 public class ErrorResponse {
     public String error;
