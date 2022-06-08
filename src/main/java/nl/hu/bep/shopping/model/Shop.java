@@ -1,5 +1,6 @@
 package nl.hu.bep.shopping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -20,6 +21,16 @@ public class Shop {
 
     public List<ShoppingList> getAllShoppingLists() {
         return ShoppingList.getAllLists();
+    }
+
+    public List<ShoppingList> getAllShoppingLists(String owner){
+        List<ShoppingList> lists = new ArrayList<>();
+        for(ShoppingList list: Shop.getShop().getAllShoppingLists()){
+            if(list.getOwner().getName().equals(owner)){
+                lists.add(list);
+            }
+        }
+        return lists;
     }
 
     public ShoppingList getShoppingListByName(String nm) {
