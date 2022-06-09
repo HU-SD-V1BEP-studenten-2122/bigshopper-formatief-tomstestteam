@@ -16,14 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("list")
-@RolesAllowed("gebruiker")
+@RolesAllowed({"gebruiker", "admin"})
 public class ListResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<ShoppingList> getShoppingLists(@Context SecurityContext currentContext) {
-        String currentUser = currentContext.getUserPrincipal().getName();
-        return Shop.getShop().getAllShoppingLists(currentUser);
+        if (currentContext.isUserInRole("admin")) {
+            return Shop.getShop().getAllShoppingLists();
+        } else {
+            String currentUser = currentContext.getUserPrincipal().getName();
+            return Shop.getShop().getAllShoppingLists(currentUser);
+        }
     }
 
     @POST
@@ -31,7 +35,12 @@ public class ListResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addList(@Context SecurityContext currentContext, NewListRequest newListRequest) {
         Shop shop = Shop.getShop();
-        Shopper shopper = shop.getShopper(currentContext.getUserPrincipal().getName());
+        Shopper shopper;
+        if (currentContext.isUserInRole("admin")) {
+            shopper = shop.getShopper(newListRequest.owner);
+        } else {
+            shopper = shop.getShopper(currentContext.getUserPrincipal().getName());
+        }
 
         if (shopper == null) {
             return Response.status(400).entity(ErrorResponse.fromString("Owner niet gevonden")).build();
@@ -41,6 +50,15 @@ public class ListResource {
         shopper.addList(newList);
 
         return Response.ok(newList).build();
+    }
+
+    private boolean isOwnerOk(ShoppingList list, SecurityContext context){
+        boolean isFromOwner = (list.getOwner().getName().equals(context.getUserPrincipal().getName()));
+        if (context.isUserInRole("admin")) {
+            isFromOwner = true;
+        }
+
+        return isFromOwner;
     }
 
     @GET
@@ -53,9 +71,7 @@ public class ListResource {
         if (list == null) {
             return Response.status(404).entity(ErrorResponse.fromString("List not found")).build();
         } else {
-            boolean isFromDifferentOwner = !(list.getOwner().getName().equals(currentContext.getUserPrincipal().getName()));
-
-            if (isFromDifferentOwner) {
+            if (!isOwnerOk(list, currentContext)) {
                 return Response.status(403).entity(ErrorResponse.fromString("List not yours")).build();
             } else {
                 return Response.ok(list).build();
@@ -74,8 +90,7 @@ public class ListResource {
         if (list == null) {
             return Response.status(404).entity(ErrorResponse.fromString("List not found")).build();
         }
-        boolean isFromDifferentOwner = !(list.getOwner().getName().equals(currentContext.getUserPrincipal().getName()));
-        if (isFromDifferentOwner) {
+        if (!isOwnerOk(list, currentContext)) {
             return Response.status(403).entity(ErrorResponse.fromString("List not yours")).build();
         }
         Shopper nieuweOwner = Shop.getShop().getShopper(updateListRequest.owner);
@@ -116,8 +131,8 @@ public class ListResource {
         if (product == null) {
             return Response.status(400).entity(ErrorResponse.fromString("Product not found")).build();
         }
-        boolean isFromDifferentOwner = !(list.getOwner().getName().equals(currentContext.getUserPrincipal().getName()));
-        if(isFromDifferentOwner) {
+
+        if (!isOwnerOk(list, currentContext)) {
             return Response.status(403).entity(ErrorResponse.fromString("List not yours")).build();
         }
 

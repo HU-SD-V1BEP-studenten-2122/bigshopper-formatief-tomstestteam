@@ -18,20 +18,23 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("login")
 public class AuthenticationResource {
 
     public static Key key = new SecretKeySpec("blabla".getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS512.getJcaName());
+    public static Map<String, String> userpassword = new HashMap<>();
 
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest loginRequest){
-        if(loginRequest.user.equals("tom") && loginRequest.password.equals("test")){
-
-            Date fiveMinutesFromNow = Date.from(Instant.now().plusSeconds(5 * 60));
+        String user = loginRequest.user;
+        if(userpassword.containsKey(user) && userpassword.get(user).equals(loginRequest.password)){
+            Date fiveMinutesFromNow = Date.from(Instant.now().plusSeconds(60 * 60));
             String token = Jwts.builder()
                     .setSubject(loginRequest.user)
                     .setIssuer("bigshopper")
